@@ -33,10 +33,11 @@ dependencies:
   firebase_auth: ^3.3.20
   firebase_core: ^1.18.0
   cloud_firestore: ^3.1.17
-  image_picker: ^0.8.5+3
+  file_picker: ^4.6.1
   google_maps_flutter: ^2.1.5
   location: ^4.2.0
   timeago: ^3.2.2
+  cached_network_image: ^3.2.1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -66,8 +67,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/img/logo.png
+    - assets/img/avatar.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
