@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloudstore/screens/upload.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -15,6 +16,13 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  Map<String, dynamic> icons = {
+    "text": Icons.text_snippet,
+    "image": Icons.image,
+    "video": Icons.video_file,
+    "music": Icons.audio_file
+  };
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -55,13 +63,13 @@ class _HomeState extends State<Home> {
             ),
             const ListTile(
               leading: Icon(
-                Icons.video_camera_back_rounded,
+                Icons.video_file,
               ),
               title: Text("Videos"),
             ),
             const ListTile(
               leading: Icon(
-                Icons.music_note,
+                Icons.audio_file,
               ),
               title: Text("Music"),
             ),
@@ -108,6 +116,50 @@ class _HomeState extends State<Home> {
             ),
           ),
         ),
+      ),
+      body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: firebaseFirestore.collection("users").snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          final data = snapshot.requireData;
+          if (data.docs.isEmpty) {
+            return const Center(
+              child: Text("Upload Something....."),
+            );
+          }
+          return GridView.count(
+            crossAxisCount: 2,
+            padding: const EdgeInsets.all(10),
+            children: data.docs
+                .map(
+                  (e) => Container(
+                    margin: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: Colors.blueAccent.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        IconButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            icons[e["fileType"]],
+                          ),
+                        ),
+                        Text(e["fileName"])
+                      ],
+                    ),
+                  ),
+                )
+                .toList(),
+          );
+        },
       ),
     );
   }

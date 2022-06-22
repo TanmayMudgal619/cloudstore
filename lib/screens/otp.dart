@@ -39,7 +39,7 @@ class _OTPState extends State<OTP> {
                 controller: otp,
                 decoration: const InputDecoration(
                   label: Text(
-                    "OTP",
+                    "Enter OTP",
                   ),
                 ),
                 keyboardType: TextInputType.phone,
@@ -58,7 +58,11 @@ class _OTPState extends State<OTP> {
                 },
                 child: (verifying)
                     ? (const Center(
-                        child: CircularProgressIndicator(),
+                        child: SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(),
+                        ),
                       ))
                     : (const Text(
                         "Next",

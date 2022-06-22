@@ -56,7 +56,11 @@ class _LoginState extends State<Login> {
                 },
                 child: (logging)
                     ? (const Center(
-                        child: CircularProgressIndicator(),
+                        child: SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(),
+                        ),
                       ))
                     : (const Text(
                         "Next",
