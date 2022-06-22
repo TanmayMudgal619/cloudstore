@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloudstore/screens/upload.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +69,10 @@ class _HomeState extends State<Home> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => upload()));
+        },
         child: Icon(Icons.add),
       ),
       backgroundColor: Colors.white,
@@ -82,7 +86,7 @@ class _HomeState extends State<Home> {
             decoration: InputDecoration(
               enabledBorder: InputBorder.none,
               focusedBorder: InputBorder.none,
-              fillColor: Colors.blueAccent.withOpacity(0.6),
+              fillColor: Colors.blueAccent.withOpacity(0.2),
               filled: true,
             ),
             cursorColor: Colors.white,
