@@ -82,7 +82,7 @@ class _imageUploadState extends State<imageUpload> {
   void upload() async {
     final imgLink = await widget.firebaseStorage
         .ref(
-            "images/${DateTime.now().toString() + widget.firebaseAuth.currentUser!.uid}")
+            "image/${DateTime.now().toString().replaceAll(".", " ") + widget.firebaseAuth.currentUser!.uid + imgpath.substring(imgpath.lastIndexOf("/") + 1)}")
         .putFile(File(imgpath));
     await widget.firebaseFirestore.collection("users").add({
       "user": widget.firebaseAuth.currentUser!.phoneNumber,
@@ -90,6 +90,7 @@ class _imageUploadState extends State<imageUpload> {
       "downloadLink": await imgLink.ref.getDownloadURL(),
       "createdAt": Timestamp.now(),
       "fileName": imgpath.substring(imgpath.lastIndexOf("/") + 1),
+      "downloadName": imgLink.ref.fullPath,
     }).whenComplete(() {
       Navigator.pop(context);
     });

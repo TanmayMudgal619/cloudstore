@@ -80,7 +80,7 @@ class _musicUploadState extends State<musicUpload> {
   void upload() async {
     final imgLink = await widget.firebaseStorage
         .ref(
-            "text/${DateTime.now().toString() + widget.firebaseAuth.currentUser!.uid}")
+            "music/${DateTime.now().toString().replaceAll(".", " ") + widget.firebaseAuth.currentUser!.uid + musicpath.substring(musicpath.lastIndexOf("/") + 1)}")
         .putFile(File(musicpath));
     await widget.firebaseFirestore.collection("users").add({
       "user": widget.firebaseAuth.currentUser!.phoneNumber,
@@ -88,6 +88,7 @@ class _musicUploadState extends State<musicUpload> {
       "downloadLink": await imgLink.ref.getDownloadURL(),
       "createdAt": Timestamp.now(),
       "fileName": musicpath.substring(musicpath.lastIndexOf("/") + 1),
+      "downloadName": imgLink.ref.fullPath,
     }).whenComplete(() => Navigator.pop(context));
   }
 

@@ -80,7 +80,7 @@ class _videoUploadState extends State<videoUpload> {
   void upload() async {
     final imgLink = await widget.firebaseStorage
         .ref(
-            "text/${DateTime.now().toString() + widget.firebaseAuth.currentUser!.uid}")
+            "video/${DateTime.now().toString().replaceAll(".", " ") + widget.firebaseAuth.currentUser!.uid + videopath.substring(videopath.lastIndexOf("/") + 1)}")
         .putFile(File(videopath));
     await widget.firebaseFirestore.collection("users").add({
       "user": widget.firebaseAuth.currentUser!.phoneNumber,
@@ -88,6 +88,7 @@ class _videoUploadState extends State<videoUpload> {
       "downloadLink": await imgLink.ref.getDownloadURL(),
       "createdAt": Timestamp.now(),
       "fileName": videopath.substring(videopath.lastIndexOf("/") + 1),
+      "downloadName": imgLink.ref.fullPath,
     }).whenComplete(() => Navigator.pop(context));
   }
 

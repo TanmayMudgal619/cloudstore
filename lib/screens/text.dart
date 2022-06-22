@@ -80,7 +80,7 @@ class _textUploadState extends State<textUpload> {
   void upload() async {
     final imgLink = await widget.firebaseStorage
         .ref(
-            "text/${DateTime.now().toString() + widget.firebaseAuth.currentUser!.uid}")
+            "text/${DateTime.now().toString().replaceAll(".", " ") + widget.firebaseAuth.currentUser!.uid + textpath.substring(textpath.lastIndexOf("/") + 1)}")
         .putFile(File(textpath));
     await widget.firebaseFirestore.collection("users").add({
       "user": widget.firebaseAuth.currentUser!.phoneNumber,
@@ -88,6 +88,7 @@ class _textUploadState extends State<textUpload> {
       "downloadLink": await imgLink.ref.getDownloadURL(),
       "createdAt": Timestamp.now(),
       "fileName": textpath.substring(textpath.lastIndexOf("/") + 1),
+      "downloadName": imgLink.ref.fullPath,
     }).whenComplete(() => Navigator.pop(context));
   }
 
